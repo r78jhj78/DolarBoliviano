@@ -12,8 +12,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ExchangeService _service = ExchangeService();
-
   late Future<ExchangeRate> _futureRate;
+
+  // Valor fijo del dólar paralelo (puedes actualizarlo luego)
+  static const double dolarParalelo = 11.00;
 
   @override
   void initState() {
@@ -31,26 +33,54 @@ class _HomeScreenState extends State<HomeScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
-            final rate = snapshot.data!.rates['BOB'];
+            final rateOficial = snapshot.data!.rates['BOB'];
+
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                const Text(
+                  '💵 Tasas de cambio actuales:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+
+                // Dólar oficial
                 Card(
                   elevation: 4,
                   child: ListTile(
-                    leading: const Icon(Icons.monetization_on, color: Colors.green),
-                    title: const Text('Dólar Estadounidense → Boliviano'),
-                    subtitle: Text('1 USD = $rate BOB'),
+                    leading: const Icon(Icons.account_balance, color: Colors.green),
+                    title: const Text('Dólar Oficial (Banco Central)'),
+                    subtitle: Text('1 USD = ${rateOficial.toStringAsFixed(3)} BOB'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => DetailScreen(rate: rate),
+                          builder: (_) => DetailScreen(rate: rateOficial),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Dólar paralelo
+                Card(
+                  color: Colors.orange.shade50,
+                  elevation: 4,
+                  child: ListTile(
+                    leading: const Icon(Icons.trending_up, color: Colors.orange),
+                    title: const Text('Dólar Paralelo / Mercado Negro'),
+                    subtitle: Text('1 USD = ${dolarParalelo.toStringAsFixed(2)} BOB'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DetailScreen(rate: dolarParalelo),
                         ),
                       );
                     },
