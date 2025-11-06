@@ -7,7 +7,6 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double bolivianos = 0;
     final TextEditingController controller = TextEditingController();
 
     return Scaffold(
@@ -28,9 +27,6 @@ class DetailScreen extends StatelessWidget {
                 border: OutlineInputBorder(),
                 labelText: 'Cantidad en USD',
               ),
-              onChanged: (value) {
-                bolivianos = (double.tryParse(value) ?? 0) * rate;
-              },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
