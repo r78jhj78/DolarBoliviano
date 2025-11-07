@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/crypto_list_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const CryptoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CryptoApp extends StatelessWidget {
+  const CryptoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'CryptoTracker Pro',
       debugShowCheckedModeBanner: false,
-      title: 'Tasa de Cambio USD-BOB',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.tealAccent,
+        textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
+        scaffoldBackgroundColor: const Color(0xFF0E1116),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF161B22),
+          elevation: 0,
+        ),
       ),
-      home: const HomeScreen(),
+      home: CryptoListScreen(),
     );
   }
 }
